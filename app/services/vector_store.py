@@ -32,7 +32,7 @@ def store_embeddings(embedded_chunks : List[Dict]):
         ids=ids, documents=documents, metadatas=metadatas, embeddings=embeddings
     )
     
-    collection.persist()
+    print(f"✅ Stored {len(embedded_chunks)} chunks")
     
     
 def search_similar(query_vector, k=3):
@@ -54,3 +54,7 @@ def search_similar(query_vector, k=3):
         matches.append(match)
     
     return matches
+
+
+
+ 
