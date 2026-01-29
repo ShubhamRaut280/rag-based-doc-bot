@@ -2,7 +2,7 @@ from pypdf import PdfReader
 from typing import List, Dict
 import os 
 
-def parsePdf(path : str) -> List[Dict]:
+def parse_pdf(path : str) -> List[Dict]:
     reader = PdfReader(path)
     parsedPages = []
     
@@ -17,7 +17,7 @@ def parsePdf(path : str) -> List[Dict]:
                 "text" : text.strip(),
                 "source": filename
             })
-    
+            
     return parsedPages
 
     
