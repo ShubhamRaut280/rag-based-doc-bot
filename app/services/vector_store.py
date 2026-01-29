@@ -33,3 +33,24 @@ def store_embeddings(embedded_chunks : List[Dict]):
     )
     
     collection.persist()
+    
+    
+def search_similar(query_vector, k=3):
+    results = collection.query(
+        query_embeddings=[query_vector],
+        n_results=k
+    )
+    
+    
+    matches = []
+    
+    for i in range(len(results['ids'][0])):
+        match = {
+            'id': results['ids'][0][i],
+            'content': results['documents'][0][i],
+            'metadata': results['metadatas'][0][i],
+            'distance': results['distances'][0][i]
+        }
+        matches.append(match)
+    
+    return matches
