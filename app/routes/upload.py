@@ -18,7 +18,7 @@ async def  uploadFiles(files : list[UploadFile] = File(...)):
         if(file.content_type not in allowedFileTypes): 
             raise HTTPException(
                 status_code=400, 
-                detail=f'Only following types are allowed ${[type[11 :] for type in allowedFileTypes]}'
+                detail=f'Only following types are allowed : {allowedFileTypes}'
             )
 
         file_id = f'${uuid.uuid4()}-${file.filename}'
