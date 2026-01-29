@@ -20,7 +20,7 @@ def answer_question(question: str) -> dict:
      
     result = model.invoke(prompt)
 
-    source = [res['metadata'] for res in search_res]
+    source = [[res['metadata']] for res in search_res]
     
     return {
         "answer": result.content,
