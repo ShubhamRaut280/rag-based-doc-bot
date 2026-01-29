@@ -1,6 +1,6 @@
 from langchain.chat_models import init_chat_model
-from embedder import generate_embeddings
-from vector_store import search_similar
+from app.services.embedder import generate_embeddings
+from app.services.vector_store import search_similar
 from dotenv import load_dotenv
 import os
 

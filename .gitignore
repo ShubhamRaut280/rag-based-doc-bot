@@ -1,4 +1,6 @@
-__pycache__
+__pycache__/
 uploads/
 *.pyc
 .env
+*.pyo
+*.pyd
