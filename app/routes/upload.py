@@ -8,7 +8,7 @@ from app.services.vector_store import store_embeddings
 
 import uuid
 
-uploadRouter = APIRouter(prefix='/upload', tags=['Upload images'])
+uploadRouter = APIRouter(prefix='/upload', tags=['Upload Pdf'])
 
 allowedFileTypes = ['application/pdf']
 
