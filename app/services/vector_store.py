@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Any
+from typing import  List, Any
 from pinecone import Pinecone, ServerlessSpec
 from dotenv import load_dotenv
 
@@ -48,7 +48,7 @@ def store_embeddings(embedded_chunks : List[Any]):
     
 def search_similar(query_vector, k=3):
     results = index.query(
-        vector=query_vector,     # REQUIRED
+        vector=query_vector,     
         top_k=k,
         include_metadata=True
     )

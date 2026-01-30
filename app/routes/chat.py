@@ -1,4 +1,3 @@
-from chromadb import PersistentClient
 from fastapi import APIRouter, HTTPException
 from app.services.qa import answer_question
 

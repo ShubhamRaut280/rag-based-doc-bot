@@ -97,6 +97,12 @@ docker build -t rag-pdf-bot .
 docker run -p 8000:8000 --env-file .env rag-pdf-bot
 ```
 
+Or pull the pre-built image:
+
+```bash
+docker run -p 8000:8000 --env-file .env shubham9689/rag-bot:latest
+```
+
 API base URL: **http://localhost:8000**
 
 - **Docs:** http://localhost:8000/docs  
