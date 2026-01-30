@@ -6,14 +6,14 @@ import os
 
 load_dotenv()
 
-model = init_chat_model("google_genai:gemini-2.5-flash-lite")
+model = init_chat_model("google_genai:gemini-2.5-flash")
 
 def answer_question(question: str) -> dict:
     
     query_vector = generate_embeddings([{"content" : question ,"metadata":{}}])[0]['vector']
     search_res = search_similar(query_vector, 3)
-    
-    context = "\n\n".join([res['content'] for res in search_res])
+
+    context = "\n\n".join([res['metadata']['text'] for res in search_res])
     
     prompt = f'''Answer the following question using this provided documents context only 
      context : {context}, question is : {question}'''

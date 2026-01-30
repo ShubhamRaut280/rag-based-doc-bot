@@ -1,59 +1,59 @@
-from chromadb import Client
-from chromadb.config import Settings
-from typing import List, Dict
+import os
+from typing import Dict, List, Any
+from pinecone import Pinecone, ServerlessSpec
+from dotenv import load_dotenv
+
+load_dotenv()
+
+pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 
 
-VECTOR_DB_PATH = 'vector_db'
-COLLECTION_NAME = 'pdf_chunks'
+if INDEX_NAME not in pc.list_indexes().names():
+    pc.create_index(
+        name=INDEX_NAME,
+        dimension=384,
+        metric="cosine",
+        spec=ServerlessSpec(
+            cloud="aws",
+            region="us-east-1"
+        )
+    ) 
+
+index = pc.Index(INDEX_NAME)
 
 
-client = Client(Settings(
-    persist_directory=VECTOR_DB_PATH,
-    anonymized_telemetry=False
-))
-
-collection = client.get_or_create_collection(name=COLLECTION_NAME)
 
 
 
-def store_embeddings(embedded_chunks : List[Dict]):
-    ids = []
-    documents = []
-    metadatas = []
-    embeddings = []
+
+
+
+def store_embeddings(embedded_chunks : List[Any]):
+    vectors = []
     
-    for i , chunk in enumerate(embedded_chunks):
-        ids.append(f'chunk_{i}')
-        documents.append(chunk['content'])
-        metadatas.append(chunk['metadata'])
-        embeddings.append(chunk['vector'])
+    for i, chunk in enumerate(embedded_chunks):
+        vectors.append(
+            (
+                f'chunk_{i}',
+                chunk['vector'],
+                {
+                    "text" : chunk['content'],
+                    **chunk['metadata']
+                }
+        )
+        )
     
-    collection.add(
-        ids=ids, documents=documents, metadatas=metadatas, embeddings=embeddings
-    )
-    
-    print(f"✅ Stored {len(embedded_chunks)} chunks")
-    
+    index.upsert(vectors=vectors)
     
 def search_similar(query_vector, k=3):
-    results = collection.query(
-        query_embeddings=[query_vector],
-        n_results=k
+    results = index.query(
+        vector=query_vector,     # REQUIRED
+        top_k=k,
+        include_metadata=True
     )
-    
-    
-    matches = []
-    
-    for i in range(len(results['ids'][0])):
-        match = {
-            'id': results['ids'][0][i],
-            'content': results['documents'][0][i],
-            'metadata': results['metadatas'][0][i],
-            'distance': results['distances'][0][i]
-        }
-        matches.append(match)
-    
-    return matches
+    return results["matches"]
+
 
 
 

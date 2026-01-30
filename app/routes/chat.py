@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from chromadb import PersistentClient
+from fastapi import APIRouter, HTTPException
 from app.services.qa import answer_question
 
 chatRouter = APIRouter(prefix='/chat', tags=['Chat'])
@@ -11,4 +12,4 @@ async def chat(question: str):
         return answer_question(question)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+ 
